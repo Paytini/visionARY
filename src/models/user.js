@@ -1,6 +1,30 @@
 import mongoose from 'mongoose';
 
+const EmergencyContactSchema = new mongoose.Schema({
+    
+    name: {
+        type: String,
+        required: true,
+    },
+    phone: {
+        type: String,
+        required: true,
+    },
+    relationship: {
+        type: String,
+        required: true,
+    }
+});
+
 const UserSchema = new mongoose.Schema({
+    id: {
+        type: Number,
+        required:true,
+    },
+    name: {
+        type: String,
+        required: true,
+    },
     email: {
         type: String,
         required: true,
@@ -9,27 +33,15 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    class: {
+    phone: {
         type: String,
         required: true,
-        enum: ['content_creator', 'sound_creator'],
     },
-    subscription_type: {
+    blood_type: {
         type: String,
-        required: true,
-        enum: ['free', 'standard', 'premium'],
-        default: 'free',
+        required: false,
     },
-    is_deleted: {
-        type: Boolean,
-        required: true,
-        default: false,
-    },
-    created_at: {
-        type: Date,
-        required: true,
-        default: Date.now,
-    },
+    emergency_contacts: [EmergencyContactSchema] // Array of emergency contacts
 });
 
 const model = mongoose.model('User', UserSchema);
