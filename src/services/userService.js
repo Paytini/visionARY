@@ -14,19 +14,4 @@ export default {
     async createUser(data) {
         return await dbService.create(user, data);
     },
-    async getUserEmergencyContacts(id) {
-        const userData = await dbService.findById(user, id);
-
-        if (!userData) {
-            throw new Error("Usuario no encontrado");
-        }
-
-        const emergencyContacts = userData.emergency_contacts;
-        const contactsData = emergencyContacts.map(contact => ({
-            name: contact.name,
-            phone: contact.phone
-        }));
-
-        return contactsData;
-    },
 };
