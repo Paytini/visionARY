@@ -15,7 +15,7 @@ export default {
      */
     port: parseInt(process.env.PORT, 10),
     api: {
-        prefix: '/api',
+        prefix: '/vision',
     },
     databaseURL: process.env.DATABASE_URL,
 };

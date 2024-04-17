@@ -2,6 +2,10 @@ import express from 'express';
 import config from './config/index.js'; //TODO: Why can't i leave out the /index.js part?
 import loaders from './loaders/index.js';
 
+
+//const bcrypt = require('bcrypt');
+//const mongoose = require('mongoose');
+
 async function startServer() {
     const app = express();
 
