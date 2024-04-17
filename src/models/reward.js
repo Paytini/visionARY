@@ -15,6 +15,6 @@ const rewardSchema = new mongoose.Schema({
     }
 });
 
-const model = mongoose.model('experience', UserSchema);
+const model = mongoose.model('experience', rewardSchema);
 
 export default model;

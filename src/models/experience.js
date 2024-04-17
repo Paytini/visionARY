@@ -11,6 +11,6 @@ const experienceSchema = new mongoose.Schema({
     },
 });
 
-const model = mongoose.model('experience', UserSchema);
+const model = mongoose.model('experience', experienceSchema);
 
 export default model;
