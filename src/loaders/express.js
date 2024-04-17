@@ -2,8 +2,6 @@ import routes from '../api/index.js';
 import config from '../config/index.js';
 import bodyParser from 'body-parser';
 import express from 'express';
-import bcrypt from 'bcrypt';
-import mongoose from 'mongoose';
 import User from '../models/user.js';
 import path from 'path';
 const app = express();
