@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrate</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+            background-image: url('FondoRegistro.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        #contenedor {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #contenedorcentrado {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.5);
+        }
+        #login {
+            background-color: #1D6069;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        #loginform label,
+        #loginform input,
+        #loginform button {
+            display: block;
+            margin-bottom: 10px;
+            width: calc(100% - 40px);
+            margin-left: 20px;
+            font-family: Consolas, sans-serif;
+        }
+        #loginform input {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+        #loginform button {
+            padding: 10px;
+            border: none;
+            background-color: #1ECDE5;
+            color: #fff;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+        #loginform button:hover {
+            background-color: #1AA7BA; 
+	    margin: 0 auto;
+            display: block;
+        }
+        #derecho {
+            padding: 20px;
+            color: #0B3F3F;
+        }
+        .titulo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .pie-form a {
+            color: #0B3F3F;
+            text-decoration: none;
+            margin-right: 10px;
+	    font-family: Consolas;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #0B3F3F;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div id="contenedor">
+    <div id="contenedorcentrado">
+        <div id="login">
+            <form id="loginform">
+                <label for="correo" style="font-family: Consolas, sans-serif; color: #fff; font-weight: bold;">Correo Electrónico</label>
+                <input id="correo" type="email" name="correo" placeholder="Correo electrónico" required>
+                
+                <label for="usuario" style="font-family: Consolas, sans-serif; color: #fff; font-weight: bold;">Nombre de Usuario</label>
+                <input id="usuario" type="text" name="usuario" placeholder="Usuario" required>
+                
+                <label for="password" style="font-family: Consolas: Arial, sans-serif; color: #fff; font-weight: bold;">Contraseña</label>
+                <input id="password" type="password" placeholder="Contraseña" name="password" required>
+                
+                <button type="submit" title="Ingresar" name="Ingresar">Registrar</button>
+            </form>
+        </div>
+        <div id="derecho">
+            <div class="titulo">
+                Registrate para una mejor experiencia
+            </div>
+            <hr>
+            <div class="pie-form">
+                <a href="javascript:history.back()">« Volver</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

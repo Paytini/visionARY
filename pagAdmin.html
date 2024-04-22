@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Administrar</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  #banner {
+    background-color: #84CADC;
+    padding: 10px;
+  }
+
+  #logo {
+    width: 150px;
+    height: auto;
+  }
+
+  #banner ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+    background-color: #157FA4;
+  }
+
+  #banner li {
+    position: relative;
+  }
+
+  #banner li a {
+    display: block;
+    color: white;
+    padding: 14px 16px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+
+  #banner li:hover a {
+    background-color: #111;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #333;
+    min-width: 160px;
+    z-index: 1;
+  }
+
+  .dropdown-content a {
+    display: block;
+    color: white;
+    padding: 10px 16px;
+    text-decoration: none;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #111;
+  }
+
+  #banner li:hover .dropdown-content {
+    display: block;
+  }
+
+  .dropdown-content {
+    background-color: #157FA4;
+    min-width: 200px;
+  }
+
+  .dropdown-content a {
+    padding: 12px 20px;
+  }
+
+  /* New styles for the admin section */
+  .admin-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f2f2f2;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+
+  table, th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #157FA4;
+    color: white;
+  }
+
+  th:first-child, td:first-child {
+    width: 30%;
+  }
+
+  th:last-child, td:last-child {
+    width: 10%;
+  }
+
+  .add-button {
+    background-color: #157FA4;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .add-button:hover {
+    background-color: #111;
+  }
+
+</style>
+</head>
+<body>
+
+<div id="banner">
+  <img src="LogoAR.png" alt="Logo" id="logo"> 
+  <ul>
+    <li>
+      <a class="active" href="#home">Inicio</a>
+      <div class="dropdown-content">
+        <a href="#">Visita VR</a>
+        <a href="#">Usuario</a>
+        <a href="#">Perfil</a>
+      </div>
+    </li>
+    <li>
+      <a href="#news">Noticias</a>
+      <div class="dropdown-content">
+        <a href="#">Recientes...</a>
+        <a href="#">Historia sobre la pagina</a>
+        <a href="#">Todo sobre VR</a>
+      </div>
+    </li>
+    <li>
+      <a href="#contact">Contacto</a>
+      <div class="dropdown-content">
+        <a href="#">Nombre</a>
+        <a href="#">Direccion</a>
+        <a href="#">Numero Telefonico</a>
+      </div>
+    </li>
+    <li>
+      <a href="#about">Acerca de</a>
+      <div class="dropdown-content">
+        <a href="#">¿Que somos?</a>
+        <a href="#">Grupo</a>
+        <a href="#">Nosotros...</a>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div class="admin-section">
+  <h2>Administrar Formas de Realidad Aumentada</h2>
+  <table>
+    <tr>
+      <th>Nombre</th>
+      <th>Tipo</th>
+      <th>Acciones</th>
+    </tr>
+    
+    <tr>
+      <td>Tren a escala</td>
+      <td>Objeto 3D</td>
+      <td>
+        <button>Editar</button>
+        <button>Eliminar</button>
+      </td>
+    </tr>
+
+    <tr>
+      <td>Cubo</td>
+      <td>Objeto 3D</td>
+      <td>
+        <button>Editar</button>
+        <button>Eliminar</button>
+      </td>
+    </tr>
+    
+  </table>
+  <button class="add-button">Nueva Forma</button>
+</div>
+
+</body>
+</html>
