@@ -1,0 +1,15 @@
+[req]
+default_bits = 4096
+prompt = no
+default_md = sha256
+req_extensions = req_ext
+distinguished_name = req_distinguished_name
+[req_distinguished_name]
+countryName = MX
+stateOrProvinceName = BAJCA CALIFORNIA
+organizationName = UABC
+organizationalUnitName = FIM
+commonName = mxl.uabc.mx
+emailAddress = micuenta@uabc.edu.mx
+[req_ext]
+[alt_names]
