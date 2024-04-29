@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, GridFSBucket } = require('mongodb');
 const fs = require("fs");
 const https = require("https");
 
@@ -22,69 +22,84 @@ const client = new MongoClient(uri, {
     }
 });
 
-app.get('/', async (req, res) => {
-    let base;
+// 连接到 MongoDB
+async function connectToDatabase() {
     try {
         await client.connect();
-        base = client.db("3d");
+        console.log("Connected to MongoDB!");
+    } catch (error) {
+        console.error("Error connecting to MongoDB:", error);
+        throw error;
+    }
+}
+
+// 定义路由
+app.get('/', async (req, res) => {
+    try {
+        const base = client.db("3d");
         const collection = base.collection('images');
-        console.log("Pinged your deployment. You successfully connected to MongoDB!");
         const doc = await collection.findOne({});
+        if (!doc) {
+            return res.status(404).send('No data found');
+        }
+        console.log("existe");
         const patternData = Buffer.from(doc.image.buffer);
         res.send(patternData);
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Error');
-    } finally {
-        if (client) await client.close();
+        console.error("Error fetching pattern data:", error);
+        res.status(500).send('Internal Server Error');
     }
 });
 
 app.get('/model', async (req, res) => {
-    let base;
     try {
-        await client.connect();
-        base = client.db("3d");
-        const collection = base.collection('models');
-        console.log("Pinged your deployment. You successfully connected to MongoDB!");
-        const doc = await collection.findOne({});
-        const modelData = Buffer.from(doc.model.buffer);
-        res.send(modelData);
+        const base = client.db("3d");
+        const bucket = new GridFSBucket(base);
+
+        // Download the model file from GridFS
+        const downloadStream = bucket.openDownloadStreamByName('tren.glb');
+
+        let modelData = Buffer.from('');
+        
+        downloadStream.on('data', (chunk) => {
+            modelData = Buffer.concat([modelData, chunk]);
+        });
+
+        downloadStream.on('error', (error) => {
+            console.error("Error downloading model:", error);
+            res.status(500).send('Internal Server Error');
+        });
+
+        downloadStream.on('end', () => {
+            console.log('Model retrieved from database');
+            // Send the model data to the client
+            res.send(modelData);
+        });
+
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Error');
-    } finally {
-        if (client) await client.close();
+        console.error("Error fetching model data:", error);
+        res.status(500).send('Internal Server Error');
     }
 });
 
-app.get('/scene', async (req, res) => {
-    let base;
+
+async function startServer() {
     try {
-        await client.connect();
-        base = client.db("3d");
-        const collection = base.collection('scenes');
-        console.log("Pinged your deployment. You successfully connected to MongoDB!");
-        const doc = await collection.findOne({});
-        const sceneData = Buffer.from(doc.scene.buffer);
-        res.send(sceneData);
+        await connectToDatabase();
+        const credenciales = {
+            key: llavePrivada,
+            cert: certificado,
+            passphrase: "123456" // Contraseña de la llave privada utilizada en la creación del certificado
+        };
+        const httpsServer = https.createServer(credenciales, app);
+        httpsServer.listen(port, () => {
+            console.log('Servidor HTTPS escuchando en el puerto:', port);
+        }).on('error', err => {
+            console.log('Error al iniciar el servidor:', err);
+        });
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Error');
-    } finally {
-        if (client) await client.close();
+        console.error("Error starting server:", error);
     }
-});
+}
 
-const credenciales = {
-    key: llavePrivada,
-    cert: certificado,
-    passphrase: "123456" // Contraseña de la llave privada utilizada en la creación del certificado
-};
-
-const httpsServer = https.createServer(credenciales, app);
-httpsServer.listen(port, () => {
-    console.log('Servidor HTTPS escuchando en el puerto:', port);
-}).on('error', err => {
-    console.log('Error al iniciar el servidor:', err);
-});
+startServer();

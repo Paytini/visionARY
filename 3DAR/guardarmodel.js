@@ -1,5 +1,6 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const fs = require('fs');
+const { GridFSBucket } = require('mongodb');
 
 const uri = "mongodb+srv://haifengyu:145365258@3d.nkhtzja.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
@@ -13,28 +14,30 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     await client.connect();
-    const base = client.db("3d");
-    const collection = base.collection('models');
-    console.log("Connected to MongoDB!");
+    const database = client.db("3d");
+    const bucket = new GridFSBucket(database);
 
     // Read the glTF file
-    // const modelData = fs.readFileSync('./tren.gltf');
+    const modelReadStream = fs.createReadStream('./tren.glb');
 
-    // Insert the model data into the database
-    // await collection.insertOne({ model: modelData });
-    // console.log('Model saved to database');
-
-    // Find the model document from the database
-    const doc = await collection.findOne({});
-
-    // Convert the Binary instance to Buffer
-    const modelBuffer = Buffer.from(doc.model.buffer);
-
-    // Write the Buffer to a file
-    fs.writeFile('tren_retrieved.gltf', modelBuffer, err => {
-      if (err) throw err;
-      console.log('Model retrieved from database');
+    // Upload the model file to GridFS
+    const uploadStream = bucket.openUploadStream('tren.glb');
+    await new Promise((resolve, reject) => {
+      modelReadStream.pipe(uploadStream)
+        .on('error', reject)
+        .on('finish', resolve);
     });
+    console.log('Model saved to database');
+
+    // Download the model file from GridFS
+    // const downloadStream = bucket.openDownloadStreamByName('tren.glb');
+    // const fileWriteStream = fs.createWriteStream('./tren_retrieved.glb');
+    // await new Promise((resolve, reject) => {
+    //   downloadStream.pipe(fileWriteStream)
+    //     .on('error', reject)
+    //     .on('finish', resolve);
+    // });
+    // console.log('Model retrieved from database');
   } finally {
     await client.close();
   }
