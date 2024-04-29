@@ -6,17 +6,26 @@
   body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background-image: url('FondoIntro.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
+    overflow: hidden;
+  }
+
+  #video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 80%;
+    min-height: 80%;
+    z-index: -1;
   }
 
   #banner {
     background-color: #0B4F67;
     padding: 10px;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
+    position: relative;
+    z-index: 1;
   }
 
   #logo {
@@ -47,12 +56,17 @@
 </head>
 <body>
 
+<video autoplay loop muted id="video-background">
+  <source src="Video.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 <div id="banner">
-  <img src="VisionARY_Fondo.png" alt="Logo" id="logo"> 
   <div class="buttons">
     <a href="login.html" class="button">Login</a>
     <a href="Registro.html" class="button">Registro</a>
   </div>
 </div>
+
 </body>
 </html>
