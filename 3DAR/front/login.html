@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisionARy</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+            background-image: url('FondoRegistro.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+        }
+        #contenedor {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #central {
+            width: 300px;
+        }
+        #login {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.5);
+        }
+        .titulo {
+            font-family: 'Overpass', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #loginform input[type="text"],
+        #loginform input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: none;
+            box-sizing: border-box;
+        }
+        #loginform button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #1ECDE5;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #loginform button:hover {
+            background-color: #1AA7BA;
+        }
+        .pie-form {
+            text-align: center;
+        }
+        .pie-form a {
+            color: #fff;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+        .pie-form a:hover {
+            color: #1AA7BA;
+        }
+        .inferior {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .inferior a {
+            color: #fff;
+            text-decoration: none;
+        }
+        #login img {
+            display: block;
+            margin: 0 auto;
+            width: 200px;
+            height: auto;
+            margin-bottom: 20px;
+
+        }
+    </style>
+</head>
+<body>
+
+<div id="contenedor">
+    <div id="central">
+        <div id="login">
+            <img src="LogoARY.png" alt="Logo">
+            <div class="titulo">
+                Bienvenido
+            </div>
+            <form id="loginform">
+                <input type="text" name="usuario" placeholder="Usuario" required>
+                <input type="password" placeholder="Contraseña" name="password" required>
+                <button type="submit" title="Ingresar" name="Ingresar">Login</button>
+            </form>
+            <div class="pie-form" style="font-family: Consolas, sans-serif; font-size: 14px;">
+                <a href="#" >¿Perdiste tu contraseña?</a><br>
+                <a href="Registro.html">¿No tienes Cuenta? Regístrate</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
