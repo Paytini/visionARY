@@ -4,6 +4,8 @@
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "https": "^1.0.0",
+    "mongodb": "^6.6.0",
     "uuid": "^9.0.1"
   },
   "name": "visionary_frontend",
