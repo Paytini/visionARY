@@ -108,6 +108,57 @@
         </div>
     </div>
 </div>
+<script>
+    document.getElementById("loginform").addEventListener("submit", function(event){
+        event.preventDefault();
+        // Obtener los valores de los campos del formulario
+        var name = document.getElementById("usuario").value;
+        var correo = document.getElementById("correo").value;
+        var password = document.getElementById("password").value;
+        var rol = "visitante"; // Asignar el rol directamente
+       
+        // Generar un ID aleatorio (puedes implementar tu lógica para generar IDs aquí)
+        var id = generateRandomId(); // Por ejemplo, puedes usar una función que genere un ID aleatorio
 
+        // Construir el objeto con los datos del formulario
+        var datos = {
+            id: id,
+            name: name,
+            email: correo,
+            password: password,
+            rol: rol
+        };
+        alert('Datos de usuario guardados en el localStorage correctamente:\n' + JSON.stringify(datos)); // Mensaje de éxito con datos del usuario
+
+        // Enviar los datos al backend utilizando Fetch API
+        fetch("http://localhost:5080/vision/users/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(datos)
+        })
+        .then(response => {
+            if(response.ok) {
+                // Aquí puedes manejar la respuesta del servidor si es exitosa
+                console.log("Registro exitoso");
+                // Por ejemplo, redireccionar a otra página
+                window.location.href = "https://localhost:4000/pagAdmin.html";
+            } else {
+                // Aquí puedes manejar la respuesta del servidor si hay un error
+                console.error("Error en el registro");
+            }
+        })
+        .catch(error => {
+            console.error("Error en la solicitud:", error);
+        });
+    });
+
+    // Función para generar un ID aleatorio (puedes implementar tu lógica aquí)
+    function generateRandomId() {
+        // Aquí puedes implementar tu lógica para generar un ID aleatorio
+        return "A" + Math.random().toString(36).substr(2, 4).toUpperCase(); // Por ejemplo, generamos un ID aleatorio de la forma "Axxxx"
+    }
+</script>
 </body>
 </html>
