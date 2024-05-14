@@ -99,14 +99,6 @@
     color: white;
   }
 
-  th:first-child, td:first-child {
-    width: 30%;
-  }
-
-  th:last-child, td:last-child {
-    width: 10%;
-  }
-
   .add-button {
     background-color: #157FA4;
     color: white;
@@ -120,167 +112,176 @@
     background-color: #111;
   }
 
+  /* Hide all admin sections by default */
+  .admin-section {
+    display: none;
+  }
+
 </style>
 </head>
 <body>
 
 <div id="banner">
-  <img src="LogoAR.png" alt="Logo" id="logo"> 
+  <img src="./LogoARY.png" alt="Logo" id="logo"> 
   <ul>
     <li>
-      <a class="active" href="#home">Inicio</a>
-      <div class="dropdown-content">
-        <a href="#">Visita VR</a>
-        <a href="#">Usuario</a>
-        <a href="#">Perfil</a>
-      </div>
+      <a href="#tabla-users" onclick="mostrarSeccion('tabla-users')">Users</a>
     </li>
     <li>
-      <a href="#news">Noticias</a>
-      <div class="dropdown-content">
-        <a href="#">Recientes...</a>
-        <a href="#">Historia sobre la pagina</a>
-        <a href="#">Todo sobre VR</a>
-      </div>
+      <a href="#tabla-recourse" onclick="mostrarSeccion('tabla-recourse')">Recourse</a>
     </li>
     <li>
-      <a href="#contact">Contacto</a>
-      <div class="dropdown-content">
-        <a href="#">Nombre</a>
-        <a href="#">Direccion</a>
-        <a href="#">Numero Telefonico</a>
-      </div>
-    </li>
-    <li>
-      <a href="#about">Acerca de</a>
-      <div class="dropdown-content">
-        <a href="#">¿Que somos?</a>
-        <a href="#">Grupo</a>
-        <a href="#">Nosotros...</a>
-      </div>
+      <a href="#tabla-archiver" onclick="mostrarSeccion('tabla-archiver')">Archiver</a>
     </li>
   </ul>
 </div>
 
-<div class="admin-section">
-  <h2>Administrar Formas de Realidad Aumentada</h2>
-  <table id="tabla-formas">
+<div class="admin-section" id="tabla-users">
+  <h2>Administrar Usuarios</h2>
+  <table id="tabla-users-data">
     <tr>
       <th>Nombre</th>
-      <th>Tipo</th>
+      <th>Email</th>
+      <th>Rol</th>
+      <th>Fecha de Registro</th>
       <th>Acciones</th>
     </tr>
-    
-    <tr>
-      <td>Tren a escala</td>
-      <td>Objeto 3D</td>
-      <td>
-        <button class="editar-button">Editar</button>
-        <button class="eliminar-button">Eliminar</button>
-      </td>
-    </tr>
-
-    <tr>
-      <td>Cubo</td>
-      <td>Objeto 3D</td>
-      <td>
-        <button class="editar-button">Editar</button>
-        <button class="eliminar-button">Eliminar</button>
-      </td>
-    </tr>
-    
   </table>
-  <!-- <button class="add-button">Nueva Forma</button> -->
-  <button class="add-button" id="boton-nueva-forma">Nueva Forma</button>
+  <button class="add-button" id="boton-nuevo-usuario">Nuevo Usuario</button>
+</div>
 
+<div class="admin-section" id="tabla-recourse">
+  <h2>Administrar Recursos</h2>
+  <table id="tabla-recourse-data">
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Marker Url</th>
+      <th>Model Url</th>
+      <th>Acciones</th>
+    </tr>
+  </table>
+  <button class="add-button" id="boton-nuevo-recurso">Nuevo Recurso</button>
+</div>
+
+<div class="admin-section" id="tabla-archiver">
+  <h2>Administrar Archivos</h2>
+  <table id="tabla-archiver-data">
+    <tr>
+      <th>Nombre</th>
+      <th>Tamaño</th>
+      <th>Formato</th>
+      <th>Fecha de Creación</th>
+      <th>Ubicación</th>
+      <th>Acciones</th>
+    </tr>
+  </table>
+  <button class="add-button" id="boton-nuevo-archivo">Nuevo Archivo</button>
 </div>
 
 <script>
-  function agregarFila() {
-    // Solicitar al usuario que ingrese el nombre
-    var nombre = window.prompt("Ingrese el nombre:");
-    // Si el usuario no ingresa un nombre o cancela, salimos de la función
-    if (nombre === null || nombre.trim() === "") {
-      return;
-    }
-    
-    // Solicitar al usuario que ingrese el tipo
-    var tipo = window.prompt("Ingrese el tipo:");
-    // Si el usuario no ingresa un tipo o cancela, salimos de la función
-    if (tipo === null || tipo.trim() === "") {
-      return;
-    }
-    
-    // Si se ingresaron tanto el nombre como el tipo, procedemos a agregar la fila a la tabla
-    var tabla = document.getElementById("tabla-formas");
-    var fila = tabla.insertRow(-1);
-    var celdaNombre = fila.insertCell(0);
-    var celdaTipo = fila.insertCell(1);
-    var celdaAcciones = fila.insertCell(2);
-    
-    // Establecer el contenido de las celdas con los valores ingresados por el usuario
-    celdaNombre.textContent = nombre;
-    celdaTipo.textContent = tipo;
-    celdaAcciones.innerHTML = '<button class="editar-button">Editar</button> <button class="eliminar-button">Eliminar</button>';
-    
-    // Agregar evento al botón de editar en la nueva fila
-    var editarButton = fila.querySelector(".editar-button");
-    editarButton.addEventListener("click", editarFila);
-
-    // Agregar evento al botón de eliminar en la nueva fila
-    var eliminarButton = fila.querySelector(".eliminar-button");
-    eliminarButton.addEventListener("click", eliminarFila);
-}
-
-document.getElementById("boton-nueva-forma").addEventListener("click", agregarFila);
-
-</script>
-
-<script>
-// Función para editar una fila
-function editarFila() {
-    // Pedir al usuario que ingrese el nuevo nombre y tipo
-    var nuevoNombre = prompt("Ingrese el nuevo nombre:");
-    // Si el usuario cancela o no proporciona un nombre, salimos de la función
-    if (nuevoNombre === null || nuevoNombre.trim() === "") {
-        return;
-    }
-    
-    var nuevoTipo = prompt("Ingrese el nuevo tipo:");
-    // Si el usuario cancela o no proporciona un tipo, salimos de la función
-    if (nuevoTipo === null || nuevoTipo.trim() === "") {
-        return;
-    }
-
-    // Actualizar la celda de nombre si se proporciona un nuevo nombre
-    if (nuevoNombre.trim() !== "") {
-        this.parentNode.parentNode.cells[0].textContent = nuevoNombre;
-    }
-
-    // Actualizar la celda de tipo si se proporciona un nuevo tipo
-    if (nuevoTipo.trim() !== "") {
-        this.parentNode.parentNode.cells[1].textContent = nuevoTipo;
-    }
-}
-
-
-
-  // Función para eliminar una fila
-  function eliminarFila() {
-    this.parentNode.parentNode.remove();
+  function cargarUsuarios() {
+    fetch('https://localhost:4000/get-users')
+      .then(response => response.json())
+      .then(data => {
+        const tabla = document.getElementById('tabla-users-data');
+        tabla.innerHTML = `<tr>
+                              <th>Nombre</th>
+                              <th>Email</th>
+                              <th>Password</th>
+                              <th>ID</th>
+                              <th>Acciones</th>
+                            </tr>`;
+        data.forEach(usuario => {
+          const fila = document.createElement('tr');
+          fila.innerHTML = `<td>${usuario.nombre}</td>
+                            <td>${usuario.email}</td>
+                            <td>${usuario.password}</td>
+                            <td>${usuario.id}</td>
+                            <td>
+                              <button class="editar-button">Editar</button>
+                              <button class="eliminar-button">Eliminar</button>
+                            </td>`;
+          tabla.appendChild(fila);
+        });
+      });
   }
 
-  // Agregar evento a los botones de editar
-  var editarButtons = document.getElementsByClassName("editar-button");
-  for (var i = 0; i < editarButtons.length; i++) {
-    editarButtons[i].addEventListener("click", editarFila);
+  function cargarRecursos() {
+    fetch('https://localhost:4000/get-recourses')
+      .then(response => response.json())
+      .then(data => {
+        const tabla = document.getElementById('tabla-recourse-data');
+        tabla.innerHTML = `<tr>
+                              <th>ID</th>
+                              <th>Nombre</th>
+                              <th>Marker Url</th>
+                              <th>Model Url</th>
+                              <th>Acciones</th>
+                            </tr>`;
+        data.forEach(recurso => {
+          const fila = document.createElement('tr');
+          fila.innerHTML = `<td>${recurso._id}</td>
+                            <td>${recurso.description}</td>
+                            <td>${recurso.markerUrl}</td>
+                            <td>${recurso.modelUrl}</td>
+                            <td>
+                              <button class="editar-button">Editar</button>
+                              <button class="eliminar-button">Eliminar</button>
+                            </td>`;
+          tabla.appendChild(fila);
+        });
+      });
   }
 
-  // Agregar evento a los botones de eliminar
-  var eliminarButtons = document.getElementsByClassName("eliminar-button");
-  for (var i = 0; i < eliminarButtons.length; i++) {
-    eliminarButtons[i].addEventListener("click", eliminarFila);
+  function cargarArchivos() {
+    fetch('https://localhost:4000/get-archiver')
+      .then(response => response.json())
+      .then(data => {
+        const tabla = document.getElementById('tabla-archiver-data');
+        tabla.innerHTML = `<tr>
+                              <th>Nombre de archivo</th>
+                              <th>Acciones</th>
+                            </tr>`;
+        data.forEach(archivo => {
+          const fila = document.createElement('tr');
+          fila.innerHTML = `<td>${archivo}</td>
+                            <td>
+                              <button class="editar-button">Editar</button>
+                              <button class="eliminar-button">Eliminar</button>
+                            </td>`;
+          tabla.appendChild(fila);
+        });
+      });
   }
+
+  function mostrarSeccion(seccion) {
+    // Ocultar todas las secciones de administración
+    const secciones = document.querySelectorAll('.admin-section');
+    secciones.forEach(seccion => {
+      seccion.style.display = 'none';
+    });
+
+    // Mostrar la sección deseada
+    document.getElementById(seccion).style.display = 'block';
+
+    // Cargar los datos correspondientes a la sección mostrada
+    switch (seccion) {
+      case 'tabla-users':
+        cargarUsuarios();
+        break;
+      case 'tabla-recourse':
+        cargarRecursos();
+        break;
+      case 'tabla-archiver':
+        cargarArchivos();
+        break;
+      default:
+        break;
+    }
+  }
+
+  mostrarSeccion('tabla-users');
 </script>
 
 </body>
