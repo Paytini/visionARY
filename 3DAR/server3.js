@@ -3,6 +3,7 @@ const cors = require('cors');
 const { MongoClient, ServerApiVersion, GridFSBucket } = require('mongodb');
 const fs = require("fs");
 const https = require("https");
+const multer = require('multer');
 
 const app = express();
 const port = 4000;
@@ -96,7 +97,39 @@ app.get('/get-users', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'recourses/'); // 指定上传文件保存的目录
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname); // 保留上传文件的原始文件名
+    }
+  });
+  const upload = multer({ storage: storage });
 
+  app.post('/upload-file', upload.single('file'), (req, res) => {
+    const file = req.file;
+    if (!file) {
+      return res.status(400).send('No file uploaded.');
+    }
+    // 在这里处理文件，比如保存文件路径到数据库中或者执行其他操作
+    res.json({ filename: file.originalname, path: file.path }); // 返回文件信息
+  });
+  
+  app.delete('/delete-file/:filename', (req, res) => {
+    const filename = req.params.filename;
+    const filePath = `${__dirname}/recourses/${filename}`;
+  
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error('Error deleting file:', err);
+        res.status(500).send('Internal Server Error');
+      } else {
+        console.log('File deleted successfully:', filename);
+        res.sendStatus(200);
+      }
+    });
+  });
 async function startServer() {
     try {
         await connectToDatabase();

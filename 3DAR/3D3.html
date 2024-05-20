@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-...YOUR_HASH_HERE..." crossorigin="anonymous" />
     <style>
         .popup {
             position: fixed;
@@ -16,6 +17,20 @@
             border-radius: 5px;
             display: none;
         }
+        
+        a-entity {
+            background-color: transparent;
+        }
+
+        /* Added styles for screenshot button */
+        #screenshotBtn {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            font-size: 32px; /* Adjust button size */
+        }
     </style>
 </head>
 <body style="margin: 0px; overflow: hidden;">
@@ -23,7 +38,7 @@
         <div>Loading, please wait...</div>
     </div>
     
-    <div id="popup" class="popup"></div>
+    <div class="popup" id="popup"></div>
 
     <div style="position: absolute; top: 20px; right: 20px; z-index: 9999;">
         <label for="rotationSlider">Rotation Y:</label><br>
@@ -39,9 +54,13 @@
         <label for="scaleSlider">Scale:</label><br>
         <input type="range" id="scaleSlider" min="0.01" max="0.5" step="0.01" value="0.01">
     </div>
-
+    <!-- Moved screenshot button to bottom center -->
+    <button id="screenshotBtn"><i class="fas fa-camera"></i></button>
     <a-scene embedded arjs>
+        <!-- Add a-frame camera entity -->
         <a-entity camera></a-entity>
+        <!-- Attach the screenshot component to the scene -->
+        <a-entity screenshot></a-entity>
     </a-scene>
 
     <script>
@@ -49,6 +68,7 @@
         var rotationXSlider = document.getElementById('rotationXSlider');
         var scaleSlider = document.getElementById('scaleSlider');
         var popup = document.getElementById('popup');
+        var screenshotBtn = document.getElementById('screenshotBtn');
 
         rotationSlider.addEventListener('input', function() {
             rotateModels('y', this.value);
@@ -107,6 +127,55 @@
                 popup.style.display = 'none';
             }, 3000);
         });
+
+        screenshotBtn.addEventListener('click', function() {
+            // Get the video element
+            var video = document.querySelector('video');
+
+            // Create a canvas for the video
+            var videoCanvas = document.createElement('canvas');
+            videoCanvas.width = video.videoWidth;
+            videoCanvas.height = video.videoHeight;
+            var videoCtx = videoCanvas.getContext('2d');
+            videoCtx.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
+
+            // Get canvas using A-Frame screenshot component
+            var canvas = document.querySelector('a-scene').components.screenshot.getCanvas('perspective');
+            
+            if (!canvas) {
+                console.error('Canvas not found');
+                return;
+            }
+        
+            // Create a merged canvas to combine video and AR content
+            var mergedCanvas = document.createElement('canvas');
+            scale = videoCanvas.height/canvas.height;
+            mergedCanvas.width = videoCanvas.width/scale;
+            mergedCanvas.height = canvas.height;
+            var ctx = mergedCanvas.getContext('2d');
+            // Draw camera video to the merged canvas
+            ctx.drawImage(videoCanvas, 0, 0, videoCanvas.width/scale, videoCanvas.height/scale);
+
+            // Draw AR content to the merged canvas
+            ctx.drawImage(canvas, videoCanvas.width/scale/2-canvas.width/2, 0,canvas.width,canvas.height);
+
+            // Convert canvas to Blob
+            mergedCanvas.toBlob(function(blob) {
+                if (!blob) {
+                    console.error('Blob not created');
+                    return;
+                }
+        
+                // Create a link element
+                var link = document.createElement('a');
+                link.download = 'screenshot.png';
+                link.href = URL.createObjectURL(blob);
+        
+                // Simulate click on the link to download the image
+                link.click();
+            });
+        });
+        
     </script>
 </body>
 </html>
