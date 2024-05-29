@@ -35,8 +35,9 @@ El proyecto funciona con MongoDB Compass. En el siguiente enlace se encuentra un
 > https://drive.google.com/drive/folders/1gGNUtp7XJTjLbvUk9xAhKyzXcXDkgyE0?fbclid=IwAR3BamMWQCRnUqwWAEzVKUTCfOumYxlizbPqnRlsSs2Y7lqgFeG8daANOCE_aem_ASFvv2-alrylHsXytlNBEwJNRqDnRoRUe0-7srB67bRWCSRYB6mjlAbPFqTbbiJUYzc5ENtFPGGFCEMXBXtMiM9R&q=parent:1gGNUtp7XJTjLbvUk9xAhKyzXcXDkgyE0
 
 
-7. Correr el servidor de Node:
-> npm start
+7. Correr el servidores de backend y frontend de Node:
+> node src/app.js
+> node 3DAR/server3.js
 
 Para ingresar a proyecto desde el navegador es con la URL
 > http://localhost:3000/
