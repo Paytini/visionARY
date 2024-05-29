@@ -37,6 +37,7 @@ El proyecto funciona con MongoDB Compass. En el siguiente enlace se encuentra un
 
 7. Correr el servidores de backend y frontend de Node:
 > node src/app.js
+
 > node 3DAR/server3.js
 
 Para ingresar a proyecto desde el navegador es con la URL
