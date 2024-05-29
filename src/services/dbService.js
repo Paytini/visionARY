@@ -19,5 +19,7 @@ export default {
     async delete(model, id) {
         // Utiliza el método findByIdAndDelete de Mongoose para eliminar el documento
         return model.findByIdAndDelete(id);
-    }
+    },async findOne(model, query, projection = { __v: 0 }, options = { lean: true }) {
+        return model.findOne(query, projection, options).select({ __v: 0 }).exec();
+    },
 };

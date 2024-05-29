@@ -4,80 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrate</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Nunito', sans-serif;
-            background-image: url('FondoRegistro.jpg');
-            background-size: cover;
-            background-position: center;
-        }
-        #contenedor {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        #contenedorcentrado {
-            background-color: rgba(255, 255, 255, 0.7);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.5);
-        }
-        #login {
-            background-color: #1D6069;
-            padding: 20px;
-            border-radius: 10px;
-        }
-        #loginform label,
-        #loginform input,
-        #loginform button {
-            display: block;
-            margin-bottom: 10px;
-            width: calc(100% - 40px);
-            margin-left: 20px;
-            font-family: Consolas, sans-serif;
-        }
-        #loginform input {
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-        }
-        #loginform button {
-            padding: 10px;
-            border: none;
-            background-color: #1ECDE5;
-            color: #fff;
-            border-radius: 30px;
-            cursor: pointer;
-        }
-        #loginform button:hover {
-            background-color: #1AA7BA; 
-	    margin: 0 auto;
-            display: block;
-        }
-        #derecho {
-            padding: 20px;
-            color: #0B3F3F;
-        }
-        .titulo {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-        .pie-form a {
-            color: #0B3F3F;
-            text-decoration: none;
-            margin-right: 10px;
-	    font-family: Consolas;
-        }
-        hr {
-            border: none;
-            border-top: 1px solid #0B3F3F;
-            margin: 10px 0;
-        }
-    </style>
+    <link rel="stylesheet" href="registro.css">
 </head>
 <body>
 
@@ -85,13 +12,13 @@
     <div id="contenedorcentrado">
         <div id="login">
             <form id="loginform">
-                <label for="correo" style="font-family: Consolas, sans-serif; color: #fff; font-weight: bold;">Correo Electrónico</label>
+                <label for="correo">Correo Electrónico</label>
                 <input id="correo" type="email" name="correo" placeholder="Correo electrónico" required>
                 
-                <label for="usuario" style="font-family: Consolas, sans-serif; color: #fff; font-weight: bold;">Nombre de Usuario</label>
+                <label for="usuario">Nombre de Usuario</label>
                 <input id="usuario" type="text" name="usuario" placeholder="Usuario" required>
                 
-                <label for="password" style="font-family: Consolas: Arial, sans-serif; color: #fff; font-weight: bold;">Contraseña</label>
+                <label for="password">Contraseña</label>
                 <input id="password" type="password" placeholder="Contraseña" name="password" required>
                 
                 <button type="submit" title="Ingresar" name="Ingresar">Registrar</button>
@@ -103,11 +30,12 @@
             </div>
             <hr>
             <div class="pie-form">
-                <a href="javascript:history.back()">« Volver</a>
+                <a href="PaginaPrincipal.html">« Volver</a>
             </div>
         </div>
     </div>
 </div>
+
 <script>
     document.getElementById("loginform").addEventListener("submit", function(event){
         event.preventDefault();
@@ -128,10 +56,10 @@
             password: password,
             rol: rol
         };
-        alert('Datos de usuario guardados en el localStorage correctamente:\n' + JSON.stringify(datos)); // Mensaje de éxito con datos del usuario
-
+      //  alert('Datos de usuario guardados en el localStorage correctamente:\n' + JSON.stringify(datos)); // Mensaje de éxito con datos del usuario
+        var baseUrl = window.location.protocol + "//" + window.location.hostname;
         // Enviar los datos al backend utilizando Fetch API
-        fetch("http://localhost:5080/vision/users/", {
+        fetch(baseUrl + ":5080/vision/users", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -143,7 +71,7 @@
                 // Aquí puedes manejar la respuesta del servidor si es exitosa
                 console.log("Registro exitoso");
                 // Por ejemplo, redireccionar a otra página
-                window.location.href = "https://localhost:4000/pagAdmin.html";
+                window.location.href = "/login.html";
             } else {
                 // Aquí puedes manejar la respuesta del servidor si hay un error
                 console.error("Error en el registro");

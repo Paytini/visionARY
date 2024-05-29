@@ -1,0 +1,93 @@
+body {
+    background-image: linear-gradient(0deg, rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('images/images/fffffff-min.jpg');
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    padding: 0;
+    font-family: 'Consolas', sans-serif;
+    color: #050505;
+}
+
+#contenedor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#contenedorcentrado {
+    background-color: rgba(241, 184, 137, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.5);
+}
+
+#login {
+    background-color: #5e2a07;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+#loginform label,
+#loginform input,
+#loginform button {
+    display: block;
+    margin-bottom: 10px;
+    width: calc(100% - 40px);
+    margin-left: 20px;
+    color: #050505;
+}
+
+#loginform input {
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: rgba(241, 184, 137, 0.7);
+}
+
+#loginform button {
+    padding: 10px;
+    border: none;
+    background-color: #0a0c0c;
+    color: #fff;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+#loginform button:hover {
+    background-color: #1AA7BA; 
+    margin: 0 auto;
+    display: block;
+}
+
+#derecho {
+    padding: 20px;
+    color: #010a0a;
+}
+
+.titulo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.pie-form a {
+    color: #010505;
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #077416;
+    margin: 10px 0;
+}
+
+/* Reducir el tamaño del logo */
+#login img {
+    display: block;
+    margin: 0 auto;
+    max-width: 300px; /* Cambia este valor según lo necesites */
+    height: 250px;
+    margin-bottom: 20px;
+}

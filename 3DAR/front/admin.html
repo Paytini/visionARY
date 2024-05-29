@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Administrar</title>
+<link rel="stylesheet" href="admin.css"> <!-- Enlace al archivo CSS externo -->
+</head>
+<body>
+
+<div id="banner">
+  <img src="./LogoARY.png" alt="Logo" id="logo"> 
+  <ul>
+    <li>
+      <a href="#tabla-users" onclick="mostrarSeccion('tabla-users')">Users</a>
+    </li>
+    <li>
+      <a href="#tabla-recourse" onclick="mostrarSeccion('tabla-recourse')">Recourse</a>
+    </li>
+    <li>
+      <a href="#tabla-archiver" onclick="mostrarSeccion('tabla-archiver')">Archiver</a>
+    </li>
+  </ul>
+  <div id="user-info">
+    <span>Nombre de usuario</span>
+    <button onclick="cerrarSesion()">Cerrar Sesión</button>
+  </div>
+</div>
+
+<div class="admin-section" id="tabla-users">
+  <h2>Administrar Usuarios</h2>
+  <table id="tabla-users-data">
+    <tr>
+      <th>Nombre</th>
+      <th>Email</th>
+      <th>Rol</th>
+      <th>Fecha de Registro</th>
+      <th>Acciones</th>
+    </tr>
+  </table>
+  <button class="add-button" id="boton-nuevo-usuario">Nuevo Usuario</button>
+</div>
+
+<div class="admin-section" id="tabla-recourse">
+  <h2>Administrar Recursos</h2>
+  <table id="tabla-recourse-data">
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Marker Url</th>
+      <th>Model Url</th>
+      <th>Acciones</th>
+    </tr>
+  </table>
+  <button class="add-button" id="boton-nuevo-recurso">Nuevo Recurso</button>
+</div>
+
+<div class="admin-section" id="tabla-archiver">
+  <h2>Administrar Archivos</h2>
+  <table id="tabla-archiver-data">
+    <tr>
+      <th>Nombre</th>
+      <th>Tamaño</th>
+      <th>Formato</th>
+      <th>Fecha de Creación</th>
+      <th>Ubicación</th>
+      <th>Acciones</th>
+    </tr>
+  </table>
+  <button class="add-button" id="boton-nuevo-archivo">Nuevo Archivo</button>
+</div>
+
+<script>
+  function cargarUsuarios() {
+    fetch('https://localhost:4000/get-users')
+      .then(response => response.json())
+      .then(data => {
+        const tabla = document.getElementById('tabla-users-data');
+        tabla.innerHTML = `<tr>
+                              <th>Nombre</th>
+                              <th>Email</th>
+                              <th>Password</th>
+                              <th>ID</th>
+                              <th>Acciones</th>
+                            </tr>`;
+        data.forEach(usuario => {
+          const fila = document.createElement('tr');
+          fila.innerHTML = `<td>${usuario.nombre}</td>
+                            <td>${usuario.email}</td>
+                            <td>${usuario.password}</td>
+                            <td>${usuario.id}</td>
+                            <td>
+                              <button class="editar-button">Editar</button>
+                              <button class="eliminar-button">Eliminar</button>
+                            </td>`;
+          tabla.appendChild(fila);
+        });
+      });
+  }
+
+  function cargarRecursos() {
+    fetch('https://localhost:4000/get-recourses')
+      .then(response => response.json())
+      .then(data => {
+        const tabla = document.getElementById('tabla-recourse-data');
+        tabla.innerHTML = `<tr>
+                              <th>ID</th>
+                              <th>Nombre</th>
+                              <th>Marker Url</th>
+                              <th>Model Url</th>
+                              <th>Acciones</th>
+                            </tr>`;
+        data.forEach(recurso => {
+          const fila = document.createElement('tr');
+          fila.innerHTML = `<td>${recurso._id}</td>
+                            <td>${recurso.description}</td>
+                            <td>${recurso.markerUrl}</td>
+                            <td>${recurso.modelUrl}</td>
+                            <td>
+                              <button class="editar-button">Editar</button>
+                              <button class="eliminar-button">Eliminar</button>
+                            </td>`;
+          tabla.appendChild(fila);
+        });
+      });
+  }
+
+  function cargarArchivos() {
+    fetch('https://localhost:4000/get-archiver')
+      .then(response => response.json())
+      .then(data => {
+        const tabla = document.getElementById('tabla-archiver-data');
+        tabla.innerHTML = `<tr>
+                              <th>Nombre de archivo</th>
+                              <th>Acciones</th>
+                            </tr>`;
+        data.forEach(archivo => {
+          const fila = document.createElement('tr');
+          fila.innerHTML = `<td>${archivo}</td>
+                            <td>
+                              <button class="editar-button">Editar</button>
+                              <button class="eliminar-button">Eliminar</button>
+                            </td>`;
+          tabla.appendChild(fila);
+        });
+      });
+  }
+
+  function mostrarSeccion(seccion) {
+    // Ocultar todas las secciones de administración
+    const secciones = document.querySelectorAll('.admin-section');
+    secciones.forEach(seccion => {
+      seccion.style.display = 'none';
+    });
+
+    // Mostrar la sección deseada
+    document.getElementById(seccion).style.display = 'block';
+
+    // Cargar los datos correspondientes a la sección mostrada
+    switch (seccion) {
+      case 'tabla-users':
+        cargarUsuarios();
+        break;
+      case 'tabla-recourse':
+        cargarRecursos();
+        break;
+      case 'tabla-archiver':
+        cargarArchivos();
+        break;
+      default:
+        break;
+    }
+  }
+
+  function cerrarSesion() {
+    // Aquí puedes agregar la lógica para cerrar la sesión del usuario
+    alert('Cerrar Sesión');
+  }
+
+  mostrarSeccion('tabla-users');
+</script>
+
+</body>
+</html>

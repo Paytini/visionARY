@@ -1,286 +1,607 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Administrar</title>
-<style>
-  body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
-
-  #banner {
-    background-color: #84CADC;
-    padding: 10px;
-  }
-
-  #logo {
-    width: 150px;
-    height: auto;
-  }
-
-  #banner ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: space-around;
-    background-color: #157FA4;
-  }
-
-  #banner li {
-    position: relative;
-  }
-
-  #banner li a {
-    display: block;
-    color: white;
-    padding: 14px 16px;
-    text-decoration: none;
-    transition: background-color 0.3s;
-  }
-
-  #banner li:hover a {
-    background-color: #111;
-  }
-
-  .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #333;
-    min-width: 160px;
-    z-index: 1;
-  }
-
-  .dropdown-content a {
-    display: block;
-    color: white;
-    padding: 10px 16px;
-    text-decoration: none;
-  }
-
-  .dropdown-content a:hover {
-    background-color: #111;
-  }
-
-  #banner li:hover .dropdown-content {
-    display: block;
-  }
-
-  .dropdown-content {
-    background-color: #157FA4;
-    min-width: 200px;
-  }
-
-  .dropdown-content a {
-    padding: 12px 20px;
-  }
-
-  /* New styles for the admin section */
-  .admin-section {
-    margin-top: 20px;
-    padding: 20px;
-    background-color: #f2f2f2;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-
-  table, th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-
-  th {
-    background-color: #157FA4;
-    color: white;
-  }
-
-  th:first-child, td:first-child {
-    width: 30%;
-  }
-
-  th:last-child, td:last-child {
-    width: 10%;
-  }
-
-  .add-button {
-    background-color: #157FA4;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  .add-button:hover {
-    background-color: #111;
-  }
-
-</style>
+<title>Admin</title>
+<link rel="stylesheet" href="admin.css"> <!-- Enlace al archivo CSS externo -->
 </head>
 <body>
 
+<!-- Banner -->
 <div id="banner">
-  <img src="LogoAR.png" alt="Logo" id="logo"> 
+  <img src="./LogoARY.png" alt="Logo" id="logo"> 
   <ul>
     <li>
-      <a class="active" href="#home">Inicio</a>
-      <div class="dropdown-content">
-        <a href="#">Visita VR</a>
-        <a href="#">Usuario</a>
-        <a href="#">Perfil</a>
-      </div>
+      <a href="#tabla-users" onclick="showSection('tabla-users')">Users</a>
     </li>
     <li>
-      <a href="#news">Noticias</a>
-      <div class="dropdown-content">
-        <a href="#">Recientes...</a>
-        <a href="#">Historia sobre la pagina</a>
-        <a href="#">Todo sobre VR</a>
-      </div>
+      <a href="#tabla-recourse" onclick="showSection('tabla-recourse')">Resources</a>
     </li>
     <li>
-      <a href="#contact">Contacto</a>
-      <div class="dropdown-content">
-        <a href="#">Nombre</a>
-        <a href="#">Direccion</a>
-        <a href="#">Numero Telefonico</a>
-      </div>
-    </li>
-    <li>
-      <a href="#about">Acerca de</a>
-      <div class="dropdown-content">
-        <a href="#">¿Que somos?</a>
-        <a href="#">Grupo</a>
-        <a href="#">Nosotros...</a>
-      </div>
+      <a href="#tabla-archiver" onclick="showSection('tabla-archiver')">Files</a>
     </li>
   </ul>
+  <div id="user-info">
+    <span>Nombre de usuario</span>
+    <button onclick="cerrarSesion()">Cerrar Sesión</button>
+  </div>
 </div>
 
-<div class="admin-section">
-  <h2>Administrar Formas de Realidad Aumentada</h2>
-  <table id="tabla-formas">
+<!-- Users Section -->
+<div class="admin-section" id="tabla-users">
+  <h2>Manage Users</h2>
+  <table id="tabla-users-data">
     <tr>
-      <th>Nombre</th>
-      <th>Tipo</th>
-      <th>Acciones</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Password</th>
+      <th>ID</th>
+      <th>Actions</th>
     </tr>
-    
-    <tr>
-      <td>Tren a escala</td>
-      <td>Objeto 3D</td>
-      <td>
-        <button class="editar-button">Editar</button>
-        <button class="eliminar-button">Eliminar</button>
-      </td>
-    </tr>
-
-    <tr>
-      <td>Cubo</td>
-      <td>Objeto 3D</td>
-      <td>
-        <button class="editar-button">Editar</button>
-        <button class="eliminar-button">Eliminar</button>
-      </td>
-    </tr>
-    
   </table>
-  <!-- <button class="add-button">Nueva Forma</button> -->
-  <button class="add-button" id="boton-nueva-forma">Nueva Forma</button>
+  <button class="add-button" onclick="showUserForm()">New User</button>
+</div>
 
+<!-- Resources Section -->
+<div class="admin-section" id="tabla-recourse">
+  <h2>Manage Resources</h2>
+  <table id="tabla-recourse-data">
+    <tr>
+      <th>ID</th>
+      <th>Description</th>
+      <th>Marker URL</th>
+      <th>Model URL</th>
+      <th>Actions</th>
+    </tr>
+  </table>
+  <button class="add-button" onclick="showResourceForm()">New Resource</button>
+</div>
+
+<!-- Users Form Modal -->
+<div id="user-form-modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="hideUserForm()">&times;</span>
+    <form id="user-form" class="styled-form">
+      <label for="user-id">ID:</label>
+      <input type="text" id="user-id" class="input-field" required>
+      <label for="user-name">Name:</label>
+      <input type="text" id="user-name" class="input-field" required>
+      <label for="user-email">Email:</label>
+      <input type="email" id="user-email" class="input-field" required>
+      <label for="user-password">Password:</label>
+      <input type="text" id="user-password" class="input-field" required>
+      <button onclick="saveUser()" class="submit-button">Save</button>
+    </form>
+  </div>
+</div>
+
+<!-- Resource Form Modal -->
+<div id="resource-form-modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="hideResourceForm()">&times;</span>
+    <form id="resource-form" class="styled-form">
+      <input type="hidden" id="resource-id">
+      <label for="resource-description">Description:</label>
+      <input type="text" id="resource-description" class="input-field" required>
+      <label for="resource-marker-url">Marker URL:</label>
+      <input type="text" id="resource-marker-url" class="input-field" required>
+      <label for="resource-model-url">Model URL:</label>
+      <input type="text" id="resource-model-url" class="input-field" required>
+      <button onclick="saveResource()" class="submit-button">Save</button>
+    </form>
+  </div>
+</div>
+
+<!-- Resource Edit Form Modal -->
+<div id="resource-edit-form-modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="hideResourceEditForm()">&times;</span>
+    <form id="resource-edit-form" class="styled-form">
+      <input type="hidden" id="edit-resource-id">
+      <label for="edit-resource-description">Description:</label>
+      <input type="text" id="edit-resource-description" class="input-field" required>
+      <label for="edit-resource-marker-url">Marker URL:</label>
+      <input type="text" id="edit-resource-marker-url" class="input-field" required>
+      <label for="edit-resource-model-url">Model URL:</label>
+      <input type="text" id="edit-resource-model-url" class="input-field" required>
+      <button onclick="updateResource()" class="submit-button">Update</button>
+    </form>
+  </div>
+</div>
+
+<!-- User Edit Form Modal -->
+<div id="user-edit-form-modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="hideUserEditForm()">&times;</span>
+    <form id="user-edit-form" class="styled-form">
+      <input type="hidden" id="edit-user-id">
+      <label for="edit-user-name">Name:</label>
+      <input type="text" id="edit-user-name" class="input-field" required>
+      <label for="edit-user-email">Email:</label>
+      <input type="email" id="edit-user-email" class="input-field" required>
+      <label for="edit-user-password">Password:</label>
+      <input type="text" id="edit-user-password" class="input-field" required>
+      <button onclick="updateUser()" class="submit-button">Update</button>
+    </form>
+  </div>
+</div>
+
+<!-- Files Section -->
+<div class="admin-section" id="tabla-archiver">
+  <h2>Manage Files</h2>
+  <input type="file" id="file-upload-input">
+  <button class="add-button" id="new-file-button">Upload File</button>
+  <table id="tabla-archiver-data">
+    <tr>
+      <th>Filename</th>
+      <th>Actions</th>
+    </tr>
+  </table>
 </div>
 
 <script>
-  function agregarFila() {
-    // Solicitar al usuario que ingrese el nombre
-    var nombre = window.prompt("Ingrese el nombre:");
-    // Si el usuario no ingresa un nombre o cancela, salimos de la función
-    if (nombre === null || nombre.trim() === "") {
-      return;
-    }
-    
-    // Solicitar al usuario que ingrese el tipo
-    var tipo = window.prompt("Ingrese el tipo:");
-    // Si el usuario no ingresa un tipo o cancela, salimos de la función
-    if (tipo === null || tipo.trim() === "") {
-      return;
-    }
-    
-    // Si se ingresaron tanto el nombre como el tipo, procedemos a agregar la fila a la tabla
-    var tabla = document.getElementById("tabla-formas");
-    var fila = tabla.insertRow(-1);
-    var celdaNombre = fila.insertCell(0);
-    var celdaTipo = fila.insertCell(1);
-    var celdaAcciones = fila.insertCell(2);
-    
-    // Establecer el contenido de las celdas con los valores ingresados por el usuario
-    celdaNombre.textContent = nombre;
-    celdaTipo.textContent = tipo;
-    celdaAcciones.innerHTML = '<button class="editar-button">Editar</button> <button class="eliminar-button">Eliminar</button>';
-    
-    // Agregar evento al botón de editar en la nueva fila
-    var editarButton = fila.querySelector(".editar-button");
-    editarButton.addEventListener("click", editarFila);
+// Event listener for file upload button
+document.getElementById('new-file-button').addEventListener('click', () => {
+  const fileInput = document.getElementById('file-upload-input');
+  if (fileInput.files[0]) {
+    uploadFile(fileInput.files[0]);
+  } else {
+    console.error('No file selected');
+  }
+});
 
-    // Agregar evento al botón de eliminar en la nueva fila
-    var eliminarButton = fila.querySelector(".eliminar-button");
-    eliminarButton.addEventListener("click", eliminarFila);
+// Function to handle file upload
+function uploadFile(file) {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  fetch('/upload-file', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('File uploaded successfully:', data);
+    loadFiles();
+    alert('File uploaded successfully');
+  })
+  .catch(error => {
+    console.error('Error uploading file:', error);
+    alert('Error uploading file');
+  });
 }
 
-document.getElementById("boton-nueva-forma").addEventListener("click", agregarFila);
-
-</script>
-
-<script>
-// Función para editar una fila
-function editarFila() {
-    // Pedir al usuario que ingrese el nuevo nombre y tipo
-    var nuevoNombre = prompt("Ingrese el nuevo nombre:");
-    // Si el usuario cancela o no proporciona un nombre, salimos de la función
-    if (nuevoNombre === null || nuevoNombre.trim() === "") {
-        return;
-    }
-    
-    var nuevoTipo = prompt("Ingrese el nuevo tipo:");
-    // Si el usuario cancela o no proporciona un tipo, salimos de la función
-    if (nuevoTipo === null || nuevoTipo.trim() === "") {
-        return;
-    }
-
-    // Actualizar la celda de nombre si se proporciona un nuevo nombre
-    if (nuevoNombre.trim() !== "") {
-        this.parentNode.parentNode.cells[0].textContent = nuevoNombre;
-    }
-
-    // Actualizar la celda de tipo si se proporciona un nuevo tipo
-    if (nuevoTipo.trim() !== "") {
-        this.parentNode.parentNode.cells[1].textContent = nuevoTipo;
-    }
+// Function to load users data
+function loadUsers() {
+  fetch(`/get-users`)
+    .then(response => response.json())
+    .then(data => {
+      const table = document.getElementById('tabla-users-data');
+      table.innerHTML = `<tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Password</th>
+                            <th>ID</th>
+                            <th>Actions</th>
+                          </tr>`;
+      data.forEach(user => {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${user.name}</td>
+                          <td>${user.email}</td>
+                          <td>${user.password}</td>
+                          <td>${user.id}</td>
+                          <td>
+                            <button class="edit-button" onclick="editUser('${user._id}', '${user.name}', '${user.email}', '${user.password}')">Edit</button>
+                            <button class="delete-button" onclick="deleteUser('${user._id}')">Delete</button>
+                          </td>`;
+        table.appendChild(row);
+      });
+    });
 }
 
+// Function to load resources data
+function loadResources() {
+  fetch(`/get-recourses`)
+    .then(response => response.json())
+    .then(data => {
+      const table = document.getElementById('tabla-recourse-data');
+      table.innerHTML = `<tr>
+                            <th>ID</th>
+                            <th>Description</th>
+                            <th>Marker URL</th>
+                            <th>Model URL</th>
+                            <th>Actions</th>
+                          </tr>`;
+      data.forEach(resource => {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${resource._id}</td>
+                          <td>${resource.description}</td>
+                          <td>${resource.markerUrl}</td>
+                          <td>${resource.modelUrl}</td>
+                          <td>
+                            <button class="edit-button" onclick="editResource('${resource._id}', '${resource.description}', '${resource.markerUrl}', '${resource.modelUrl}')">Edit</button>
+                            <button class="delete-button" onclick="deleteResource('${resource._id}')">Delete</button>
+                          </td>`;
+        table.appendChild(row);
+      });
+    });
+}
 
+// Function to load files data
+function loadFiles() {
+  fetch(`/get-archiver`)
+    .then(response => response.json())
+    .then(data => {
+      const table = document.getElementById('tabla-archiver-data');
+      table.innerHTML = `<tr>
+                            <th>Filename</th>
+                            <th>Actions</th>
+                          </tr>`;
+      data.forEach(file => {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${file}</td>
+                          <td>
+                            <button class="edit-button" onclick="editFile('${file}')">Edit</button>
+                            <button class="delete-button" onclick="deleteFile('${file}')">Delete</button>
+                          </td>`;
+        table.appendChild(row);
+      });
+    });
+}
 
-  // Función para eliminar una fila
-  function eliminarFila() {
-    this.parentNode.parentNode.remove();
+// Function to edit a file
+function editFile(filename) {
+  const newName = prompt('Enter new filename:', filename);
+  if (newName && newName !== filename) {
+    fetch(`/rename-file`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ oldName: filename, newName: newName })
+    })
+    .then(response => {
+      if (response.ok) {
+        console.log('File renamed successfully');
+        loadFiles();
+        alert('File renamed successfully');
+      } else {
+        console.error('Error renaming file');
+        alert('Error renaming file');
+      }
+    })
+    .catch(error => {
+      console.error('Error renaming file:', error);
+      alert('Error renaming file');
+    });
   }
+}
 
-  // Agregar evento a los botones de editar
-  var editarButtons = document.getElementsByClassName("editar-button");
-  for (var i = 0; i < editarButtons.length; i++) {
-    editarButtons[i].addEventListener("click", editarFila);
-  }
+// Function to delete a file
+function deleteFile(filename) {
+  fetch(`/delete-file/${filename}`, {
+    method: 'DELETE'
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log('File deleted successfully');
+      loadFiles();
+      alert('File deleted successfully');
+    } else {
+      console.error('Error deleting file');
+      alert('Error deleting file');
+    }
+  })
+  .catch(error => {
+    console.error('Error deleting file:', error);
+    alert('Error deleting file');
+  });
+}
 
-  // Agregar evento a los botones de eliminar
-  var eliminarButtons = document.getElementsByClassName("eliminar-button");
-  for (var i = 0; i < eliminarButtons.length; i++) {
-    eliminarButtons[i].addEventListener("click", eliminarFila);
+// Function to show a specific section
+function showSection(section) {
+  const sections = document.querySelectorAll('.admin-section');
+  sections.forEach(section => {
+    section.style.display = 'none';
+  });
+
+  document.getElementById(section).style.display = 'block';
+
+  switch (section) {
+    case 'tabla-users':
+      loadUsers();
+      break;
+    case 'tabla-recourse':
+      loadResources();
+      break;
+    case 'tabla-archiver':
+      loadFiles();
+      break;
+    default:
+      break;
   }
+}
+
+// Function to show the user form modal
+function showUserForm() {
+  document.getElementById('user-form-modal').style.display = 'block';
+}
+
+// Function to hide the user form modal
+function hideUserForm() {
+  // Reset form fields
+  document.getElementById('user-form').reset();
+  document.getElementById('user-form-modal').style.display = 'none';
+}
+
+// Function to show the resource form modal
+function showResourceForm() {
+  document.getElementById('resource-form-modal').style.display = 'block';
+}
+
+// Function to hide the resource form modal
+function hideResourceForm() {
+  // Reset form fields
+  document.getElementById('resource-form').reset();
+  document.getElementById('resource-form-modal').style.display = 'none';
+}
+
+// Function to populate the user form fields for editing
+function editUser(id, name, email, password) {
+  document.getElementById('edit-user-id').value = id;
+  document.getElementById('edit-user-name').value = name;
+  document.getElementById('edit-user-email').value = email;
+  document.getElementById('edit-user-password').value = password;
+  showUserEditForm();
+}
+function showUserEditForm() {
+  document.getElementById('user-edit-form-modal').style.display = 'block';
+}
+
+// Function to hide the user edit form modal
+function hideUserEditForm() {
+  // Reset form fields
+  document.getElementById('user-edit-form').reset();
+  document.getElementById('user-edit-form-modal').style.display = 'none';
+}
+
+// Function to update user data
+function updateUser() {
+  const id = document.getElementById('edit-user-id').value;
+  const name = document.getElementById('edit-user-name').value;
+  const email = document.getElementById('edit-user-email').value;
+  const password = document.getElementById('edit-user-password').value;
+
+  const userData = {
+    id: id,
+    name: name,
+    email: email,
+    password: password
+  };
+
+  fetch(`/update-user/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(userData)
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log('User updated successfully');
+      hideUserEditForm();
+      loadUsers();
+      alert('User updated successfully');
+    } else {
+      console.error('Error updating user');
+      alert('Error updating user');
+    }
+  })
+  .catch(error => {
+    console.error('Error updating user:', error);
+    alert('Error updating user');
+  });
+}
+
+// Function to populate the resource form fields for editing
+function editResource(id, description, markerUrl, modelUrl) {
+  document.getElementById('edit-resource-id').value = id;
+  document.getElementById('edit-resource-description').value = description;
+  document.getElementById('edit-resource-marker-url').value = markerUrl;
+  document.getElementById('edit-resource-model-url').value = modelUrl;
+  showResourceEditForm(); // 显示编辑资源的弹出窗口
+}
+function showResourceEditForm() {
+  document.getElementById('resource-edit-form-modal').style.display = 'block';
+}
+function hideResourceEditForm() {
+  // Reset form fields
+  document.getElementById('resource-edit-form').reset();
+  document.getElementById('resource-edit-form-modal').style.display = 'none';
+}
+
+// Function to update resource data
+function updateResource() {
+  const id = document.getElementById('edit-resource-id').value;
+  const description = document.getElementById('edit-resource-description').value;
+  const markerUrl = document.getElementById('edit-resource-marker-url').value;
+  const modelUrl = document.getElementById('edit-resource-model-url').value;
+
+  const resourceData = {
+    id: id,
+    description: description,
+    markerUrl: markerUrl,
+    modelUrl: modelUrl
+  };
+
+  fetch(`/update-resource/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(resourceData)
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log('Resource updated successfully');
+      hideResourceEditForm();
+      loadResources();
+      alert('Resource updated successfully');
+    } else {
+      console.error('Error updating resource');
+      alert('Error updating resource');
+    }
+  })
+  .catch(error => {
+    console.error('Error updating resource:', error);
+    alert('Error updating resource');
+  });
+}
+// Event listener for user form submission
+
+
+// Event listener for resource form submission
+document.getElementById('resource-form').addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const id = document.getElementById('resource-id').value;
+  const description = document.getElementById('resource-description').value;
+  const markerUrl = document.getElementById('resource-marker-url').value;
+  const modelUrl = document.getElementById('resource-model-url').value;
+
+  const resourceData = {
+    id: id,
+    description: description,
+    markerUrl: markerUrl,
+    modelUrl: modelUrl
+  };
+});
+function saveUser() {
+  const id = document.getElementById('user-id').value;
+  const name = document.getElementById('user-name').value;
+  const email = document.getElementById('user-email').value;
+  const password = document.getElementById('user-password').value;
+
+  const userData = {
+    id: id,
+    name: name,
+    email: email,
+    password: password
+  };
+
+  fetch('/save-user', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(userData)
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log('User saved successfully');
+      hideUserForm();
+      loadUsers();
+      alert('User saved successfully');
+    } else {
+      console.error('Error saving user');
+      alert('Error saving user');
+    }
+  })
+  .catch(error => {
+    console.error('Error saving user:', error);
+    alert('Error saving user');
+  });
+}
+function saveResource() {
+  const id = document.getElementById('resource-id').value;
+  const description = document.getElementById('resource-description').value;
+  const markerUrl = document.getElementById('resource-marker-url').value;
+  const modelUrl = document.getElementById('resource-model-url').value;
+
+  const resourceData = {
+    id: id,
+    description: description,
+    markerUrl: markerUrl,
+    modelUrl: modelUrl
+  };
+
+  fetch('/save-resource', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(resourceData)
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log('Resource saved successfully');
+      hideResourceForm();
+      loadResources();
+      alert('Resource saved successfully');
+    } else {
+      console.error('Error saving resource');
+      alert('Error saving resource');
+    }
+  })
+  .catch(error => {
+    console.error('Error saving resource:', error);
+    alert('Error saving resource');
+  });
+}
+// Close the modal when the user clicks anywhere outside of it
+window.addEventListener('click', (e) => {
+  const userFormModal = document.getElementById('user-form-modal');
+  const resourceFormModal = document.getElementById('resource-form-modal');
+  if (e.target === userFormModal) {
+    hideUserForm();
+  }
+  if (e.target === resourceFormModal) {
+    hideResourceForm();
+  }
+});
+function deleteUser(userID) {
+  fetch(`/delete-user/${userID}`, {
+    method: 'DELETE'
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log('user deleted successfully');
+      loadUsers(); // 重新加载资源列表
+      alert('user deleted successfully');
+    } else {
+      console.error('Error deleting user');
+      alert('Error deleting user');
+    }
+  })
+  .catch(error => {
+    console.error('Error deleting user:', error);
+    alert('Error deleting user');
+  });
+}
+function deleteResource(resourceId) {
+  fetch(`/delete-resource/${resourceId}`, {
+    method: 'DELETE'
+  })
+  .then(response => {
+    if (response.ok) {
+      console.log('Resource deleted successfully');
+      loadResources(); // 重新加载资源列表
+      alert('Resource deleted successfully');
+    } else {
+      console.error('Error deleting resource');
+      alert('Error deleting resource');
+    }
+  })
+  .catch(error => {
+    console.error('Error deleting resource:', error);
+    alert('Error deleting resource');
+  });
+}
+function cerrarSesion() {
+  // Aquí puedes agregar la lógica para cerrar la sesión del usuario
+  alert('Cerrar Sesión');
+}
+// Show users section by default
+showSection('tabla-users');
 </script>
 
 </body>

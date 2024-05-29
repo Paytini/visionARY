@@ -19,6 +19,9 @@ export default {
     async getAllAdminUsers() {
         return await dbService.findByRole(user, 'Admin');
     },
+    async getUserByEmail(email) {
+        return await dbService.findOne(user, { email: email });
+    },
     
 
 };

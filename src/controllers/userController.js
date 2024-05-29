@@ -1,5 +1,28 @@
 //import mongooseService from "../services/mongoose.js";
 import userService from '../services/userService.js';
+
+async function loginUser(email, password) {
+    try {
+        // Buscar usuario por email
+        const user = await userService.getUserByEmail(email);
+        if (!user) {
+            return { success: false, message: "El usuario no existe." };
+        }
+
+        // Comparar contraseñas (sin bcrypt)
+        if (password === user.password) {
+            // Contraseña correcta, iniciar sesión exitosa
+            return { success: true, message: "Inicio de sesión exitoso.", user };
+        } else {
+            // Contraseña incorrecta
+            return { success: false, message: "Contraseña incorrecta." };
+        }
+    } catch (error) {
+        // Manejar errores
+        console.error("Error al iniciar sesión:", error);
+        return { success: false, message: "Error al iniciar sesión." };
+    }
+}
 export default {
     async getAllUsers(req, res) {
         try {
@@ -48,6 +71,15 @@ export default {
             return res.status(200).send(adminUsers);
         } catch (err) {
             return res.status(500).json({message:"NO Error"});
+        }
+    },
+    async loginUser(req, res) {
+        try {
+            const { email, password } = req.body;
+            const result = await loginUser(email, password);
+            res.status(result.success ? 200 : 401).send(result);
+        } catch (err) {
+            res.status(500).send("Error interno del servidor.");
         }
     },
 };

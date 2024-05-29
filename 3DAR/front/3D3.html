@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AR.js Example</title>
+    <meta charset="UTF-8">
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-...YOUR_HASH_HERE..." crossorigin="anonymous" />
+    <style>
+        body {
+            margin: 0px;
+            overflow: hidden;
+        }
+        .top-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            z-index: 10000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .top-bar .exit-button {
+            cursor: pointer;
+            padding: 5px 10px;
+            border: 1px solid white;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .top-bar .exit-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .popup {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: none;
+        }
+        .control-panel {
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        #screenshotBtn {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            font-size: 32px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div>VisionARY</div>
+        <div class="exit-button" onclick="window.location.href = 'PaginaPrincipal.html';">Exit</div>
+    </div>
+    
+    <div class="arjs-loader">
+        <div>Loading, please wait...</div>
+    </div>
+    
+    <div id="popup" class="popup"></div>
+
+    <div class="control-panel">
+        <label for="rotationSlider">Rotation Y:</label><br>
+        <input type="range" id="rotationSlider" min="0" max="360" value="0"><br><br>
+        <label for="rotationXSlider">Rotation X:</label><br>
+        <input type="range" id="rotationXSlider" min="0" max="360" value="0"><br><br>
+        <label for="scaleSlider">Scale:</label><br>
+        <input type="range" id="scaleSlider" min="0.01" max="0.5" step="0.01" value="0.01">
+    </div>
+    
+    <button id="screenshotBtn"><i class="fas fa-camera"></i></button>
+    
+    <a-scene embedded arjs>
+        <a-entity camera></a-entity>
+    </a-scene>
+
+    <script>
+        var rotationSlider = document.getElementById('rotationSlider');
+        var rotationXSlider = document.getElementById('rotationXSlider');
+        var scaleSlider = document.getElementById('scaleSlider');
+        var popup = document.getElementById('popup');
+        var screenshotBtn = document.getElementById('screenshotBtn');
+
+        rotationSlider.addEventListener('input', function() {
+            rotateModels('y', this.value);
+        });
+
+        rotationXSlider.addEventListener('input', function() {
+            rotateModels('x', this.value);
+        });
+
+        scaleSlider.addEventListener('input', function() {
+            scaleModels(this.value);
+        });
+
+        function rotateModels(axis, value) {
+            var models = document.querySelectorAll('a-marker a-entity');
+            models.forEach(function(model) {
+                var rotation = model.getAttribute('rotation');
+                rotation[axis] = value;
+                model.setAttribute('rotation', rotation);
+            });
+        }
+
+        function scaleModels(value) {
+            var models = document.querySelectorAll('a-marker a-entity');
+            models.forEach(function(model) {
+                model.setAttribute('scale', value + ' ' + value + ' ' + value);
+            });
+        }
+
+        fetch('/get-recourses')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(function(item) {
+                    var markerEntity = document.createElement('a-marker');
+                    markerEntity.setAttribute('type', 'pattern');
+                    markerEntity.setAttribute('url', item.markerUrl);
+                    markerEntity.setAttribute('description', item.description);
+                    var modelEntity = document.createElement('a-entity');
+                    modelEntity.setAttribute('position', '0 0 0');
+                    modelEntity.setAttribute('scale', '0.02 0.02 0.02');
+                    modelEntity.setAttribute('gltf-model', item.modelUrl);
+                    modelEntity.setAttribute('rotation', '0 0 0');
+
+                    markerEntity.appendChild(modelEntity);
+                    document.querySelector('a-scene').appendChild(markerEntity);
+                });
+            })
+            .catch(error => console.error('Error loading marker and model URLs:', error));
+
+        document.querySelector('a-scene').addEventListener('markerFound', function(event) {
+            var description = event.target.getAttribute('description');
+            popup.textContent = "Found marker: " + description;
+            popup.style.display = 'block';
+            setTimeout(function() {
+                popup.style.display = 'none';
+            }, 3000);
+        });
+
+        screenshotBtn.addEventListener('click', function() {
+            var video = document.querySelector('video');
+            var videoCanvas = document.createElement('canvas');
+            videoCanvas.width = video.videoWidth;
+            videoCanvas.height = video.videoHeight;
+            var videoCtx = videoCanvas.getContext('2d');
+            videoCtx.drawImage(video, 0, 0, videoCanvas.width, videoCanvas.height);
+
+            var canvas = document.querySelector('a-scene').components.screenshot.getCanvas('perspective');
+            if (!canvas) {
+                console.error('Canvas not found');
+                return;
+            }
+
+            var mergedCanvas = document.createElement('canvas');
+            var scale = videoCanvas.height / canvas.height;
+            mergedCanvas.width = videoCanvas.width / scale;
+            mergedCanvas.height = canvas.height;
+            var ctx = mergedCanvas.getContext('2d');
+            ctx.drawImage(videoCanvas, 0, 0, videoCanvas.width / scale, videoCanvas.height / scale);
+            ctx.drawImage(canvas, (videoCanvas.width / scale / 2 - canvas.width / 2), 0);
+
+            mergedCanvas.toBlob(function(blob) {
+                if (!blob) {
+                    console.error('Blob not created');
+                    return;
+                }
+
+                var link = document.createElement('a');
+                link.download = 'screenshot.png';
+                link.href = URL.createObjectURL(blob);
+                link.click();
+            });
+        });
+    </script>
+</body>
+</html>
